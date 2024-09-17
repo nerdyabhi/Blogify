@@ -2,13 +2,19 @@ const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const userModel = require("../models/user");
 const user = require('../models/user');
-const {} = require('../utils/auth');
+const {createTokenForUser , validateToken} = require('../utils/auth');
 
 // render Home Page
 // Public 
 // GET : http://localhost:3000/
 const renderHomePage = (req, res)=>{
-    res.render("home" , {fullName :"User"});
+
+    // const data= validateToken();
+    const token = req.cookies.authToken;
+    if(!token) res.render("signin" , {error:"You're not logged in, kindly login"});
+    const userData = validateToken(token);
+    
+    res.render("home" , {fullName :userData.fullName});
 }
 
 // render Signup Page
@@ -53,15 +59,19 @@ const userSigninHandler  = asyncHandler(async(req , res)=>{
     const { email , password} = req.body;
     
     const user = await userModel.findOne({email:email});
-    if(!user) res.render("signin" , {error:true});
+    if(!user) res.render("signin" , {error:"Wrong Pass or email"});
     
     const passMatch = await bcrypt.compare(password,user.password );
 
-    if(!passMatch) res.render("signin" , {error:true});
-    
-    res.render("Home" , {fullName:user.fullName});
+    if(!passMatch) res.render("signin" , {error:"Wrong Pass or email"});
+    const token = createTokenForUser(user);
+    res.cookie("authToken", token).render("Home" , {fullName:user.fullName});
+})
+
+const userLogoutHandler = asyncHandler(async(req, res)=>{
+    res.cookie("authToken" , "");
+    res.redirect("/signin");
 })
 
 
-
-module.exports = { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler , userSigninHandler};
+module.exports = { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler , userSigninHandler , userLogoutHandler};

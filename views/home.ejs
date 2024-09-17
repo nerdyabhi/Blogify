@@ -7,17 +7,7 @@
 </head>
 <body class="bg-gray-100">
     <!-- Navigation Bar -->
-    <nav class="bg-blue-600 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-white text-2xl font-bold">My Dashboard</a>
-            <div class="space-x-4">
-                <a href="/" class="text-white hover:text-blue-200">Home</a>
-                <a href="/profile" class="text-white hover:text-blue-200">Profile</a>
-                <a href="/settings" class="text-white hover:text-blue-200">Settings</a>
-                <a href="/logout" class="text-white hover:text-blue-200">Logout</a>
-            </div>
-        </div>
-    </nav>
+    <%- include('./partials/navbar') %>
 
     <!-- Main Content -->
     <main class="container mx-auto mt-8">
