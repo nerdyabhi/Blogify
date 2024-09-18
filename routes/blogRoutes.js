@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {renderBlogPage , postBlogHandler} = require("../controllers/blogControllers");
+const {renderBlogPage , postBlogHandler , renderSinglePageBlog} = require("../controllers/blogControllers");
 const multer = require('multer');
 const path = require('path');
 
@@ -19,5 +19,6 @@ const upload = multer({storage:storage});
 
 router.get("/" , renderBlogPage);
 router.post("/" , upload.single("file"),  postBlogHandler);
+router.get("/:id", renderSinglePageBlog);
 
 module.exports = router;

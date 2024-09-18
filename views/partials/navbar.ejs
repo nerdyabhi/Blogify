@@ -1,28 +1,31 @@
-<div class="navbar py-3 px-8 bg-base-100">
-    <div class="flex-1">
-      <a class="btn btn-button text-md text-white">Blogify</a>
-    </div>
+<div class="navbar px-10 py-3  bg-base-100">
+  <div class="flex-1 flex items-center">
+    <a href="/" class="flex items-center">
+      BLOGIFY
+    </a>
+    <a class="btn btn-button text-md text-white ml-4" href="/blogs">Create Blogs</a>
 
-      <div class="dropdown dropdown-end">
-        <div tabindex="2" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-15 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-          </div>
-        </div>
-        <ul
-          tabindex="0"
-          class="menu menu-md dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
-          <li>
-            <a class="justify-between" href="/profile">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a href="/settings">Settings</a></li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
+  </div>
+
+  <div class="dropdown dropdown-end">
+    <div tabindex="2" role="button" class="btn btn-ghost btn-circle avatar">
+      <div class="w-15 rounded-full">
+        <img
+          alt="Tailwind CSS Navbar component"
+          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
       </div>
     </div>
+    <ul
+      tabindex="0"
+      class="menu menu-md dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
+      <li class="text-black">
+        <a class="justify-between" href="/profile">
+          Profile
+          <span class="badge">New</span>
+        </a>
+      </li>
+      <li class="text-black"><a href="/settings">Settings</a></li>
+      <li class="text-black"><a href="/logout">Logout</a></li>
+    </ul>
+  </div>
 </div>

@@ -1,6 +1,7 @@
 const express = require('express');
 const blogModel = require("../models/blogs");
 const asyncHandler = require('express-async-handler');
+const blogs = require('../models/blogs');
 
 
 const app = express();
@@ -27,7 +28,23 @@ const postBlogHandler = asyncHandler(async(req, res)=>{
     res.redirect("/");
 })
 
+const renderSinglePageBlog = asyncHandler(async(req, res)=>{
+    const id = req.params.id;
+
+    try {
+        const blogData = await blogModel.find({_id:id});
+        console.log(blogData);
+        
+        if(!blogData) res.send("404");
+        res.render("blog" , {blog:blogData[0]});
+    } catch (error) {
+        res.render("404");
+    }
+        
+})
+
 module.exports ={
     renderBlogPage, 
     postBlogHandler,
+    renderSinglePageBlog,
 }   

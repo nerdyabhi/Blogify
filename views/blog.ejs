@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= blog.title %> - Blogify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.0.1/dist/full.css" rel="stylesheet" />
+    <style>
+        .blog-content {
+            max-width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <%- include('./partials/navbar') %>
+
+    <div class="container mx-auto p-6 bg-gray-100 min-h-screen">
+        <!-- Blog Post Section -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-6 blog-content">
+            <figure class="mb-4">
+                <!-- Make sure the coverImageURL is a valid path -->
+                <img src="../<%= blog.coverImageURL %>" alt="<%= blog.title %>" class="object-cover w-full h-64 rounded-lg">
+            </figure>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4"><%= blog.title %></h1>
+            <!-- Assuming createdBy is an ObjectId, you'll need to populate the name in the backend -->
+            <p class="text-gray-600 mb-2"><strong>By:</strong> <%= blog.createdByName %></p>
+            <p class="text-gray-600 mb-4"><strong>Created at:</strong> <%= new Date(blog.createdAt).toLocaleDateString() %></p>
+            <div class="text-gray-800">
+                <!-- Render the blog body -->
+                <%= blog.body %>
+            </div>
+            <div class="mt-6">
+                <a href="/" class="btn btn-primary">Back to Blogs</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

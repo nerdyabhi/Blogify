@@ -30,7 +30,7 @@ const renderSignupPage = (req, res)=>{
 // Public 
 // GET : http://localhost:3000/signin
 const renderSigninPage = (req, res)=>{
-    res.render("signin" , {error:false});
+    res.render("signin" , {error:""});
 }
 
 // Register User
@@ -51,7 +51,8 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
         role:"USER",
     })
 
-    res.render("Home" , {user:newUser});
+    const blogData = await blogModel.find({});
+    res.render("Home" , {user:newUser , blogs:blogData});
 })
 
 
@@ -77,5 +78,15 @@ const userLogoutHandler = asyncHandler(async(req, res)=>{
     res.redirect("/signin");
 })
 
+const renderUserProfile = asyncHandler(async(req ,res)=>{
+    const token = req.cookies.authToken;
+    if(!token) res.render("signin" , {error:"Login to check profile"});
 
-module.exports = { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler , userSigninHandler , userLogoutHandler};
+    const payload = validateToken(token);
+    const blogData = await blogModel.find({createdBy:payload._id});
+    console.log(blogData);
+    res.render("profile" , {user:payload , blogs:blogData});
+})
+
+
+module.exports = { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler , userSigninHandler , userLogoutHandler , renderUserProfile};
