@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('./partials/head') %>
-    <title><%= fullName %>'s Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.0.1/dist/full.css" rel="stylesheet" />
+    <title><%= locals.user.fullName %>'s Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
+<body>
     <!-- Navigation Bar -->
     <%- include('./partials/navbar') %>
 
+    
     <!-- Main Content -->
-    <main class="container mx-auto mt-8">
-        <h1 class="text-3xl font-bold mb-8">Welcome, <%= fullName %>!</h1>
+    <main class="container mx-auto mt-8 bg">
+        <h1 class="text-3xl text-white font-bold mb-8">Welcome, <%= locals.user.fullName %>!</h1>
 
         <!-- Blog Posts Section -->
         <section>
@@ -30,13 +32,35 @@
                 <% } %>
             </div>
         </section>
+
+        <div class="container mx-auto py-8">
+            <h1 class="text-4xl font-bold text-center mb-8">Blogs</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% blogs.forEach(blog => { %>
+                <div class="card bg-base-100 shadow-xl">
+                    <figure>
+                        <!-- Display the cover image -->
+                        <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>" class="object-cover h-48 w-full" />
+                    </figure>
+                    <div class="card-body">
+                        <!-- Display the blog title -->
+                        <h2 class="card-title text-white text-2xl font-bold text-gray-900"><%= blog.title %></h2>
+                        <!-- Display the blog body/description -->
+                        <p class="text-white"><%= blog.body %></p>
+                        <!-- Metadata like creation date -->
+                        <p class="text-gray-500 text-white text-sm mt-2">Created at: <%= new Date(blog.createdAt).toLocaleDateString() %></p>
+                        <p class="text-gray-500 text-white text-sm">By: <%= blog.createdBy %></p>
+                        <div class="card-actions justify-end mt-4">
+                            <a href="/blogs/<%= blog._id %>" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+        
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-200 mt-12 py-6">
-        <div class="container mx-auto text-center text-gray-600">
-            &copy; 2024 My Dashboard. All rights reserved.
-        </div>
-    </footer>
+   
 </body>
 </html>

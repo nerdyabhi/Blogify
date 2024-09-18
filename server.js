@@ -4,7 +4,7 @@ const path = require('path');
 const PORT = 3000;
 const connectDB = require('./config/dbConnect.js');
 const cookieParser = require('cookie-parser');
-
+const auth = require("./middleware/auth.js")
 // Database connection
 connectDB();
 
@@ -12,12 +12,32 @@ connectDB();
 app.set("view engine", "ejs");
 app.set("views" , path.resolve("./views"));
 
-// Required Middleware's
+// Middleware's
     app.use(cookieParser());
     app.use(express.urlencoded({extended:false}));
-// Routes
+    app.use(express.json());
+    app.use(express.static('public'));
+
+
+// Routes for user
 app.use("/" , require("./routes/userRoutes"));
  
+// Routes for Blogs
+app.use("/blogs" , auth  , require("./routes/blogRoutes"))
+
+
+
+
+
+
+// Catch-all route for non-existing routes
+app.use((req, res) => {
+    res.status(404).render('404'); // Render the 404 page or a specific page
+});
+
+ 
+
+
 
 // Port
 app.listen(PORT, ()=> console.log("Server started at http://localhost:3000"));

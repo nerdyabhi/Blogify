@@ -2,19 +2,21 @@ const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const userModel = require("../models/user");
 const user = require('../models/user');
+const blogModel = require('../models/blogs');
 const {createTokenForUser , validateToken} = require('../utils/auth');
+const blogsModel = require('../models/blogs');
 
 // render Home Page
 // Public 
 // GET : http://localhost:3000/
-const renderHomePage = (req, res)=>{
+const renderHomePage = async(req, res)=>{
 
     // const data= validateToken();
     const token = req.cookies.authToken;
     if(!token) res.render("signin" , {error:"You're not logged in, kindly login"});
     const userData = validateToken(token);
-    
-    res.render("home" , {fullName :userData.fullName});
+    const blogsData = await blogModel.find({});
+    res.render("home" , {user:userData , blogs:blogsData});
 }
 
 // render Signup Page
@@ -35,6 +37,7 @@ const renderSigninPage = (req, res)=>{
 // Public 
 // POST : http://localhost:3000/signin
 const userSignupHandler  = asyncHandler(async(req , res)=>{
+
     const {fullName , email , password} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -48,7 +51,7 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
         role:"USER",
     })
 
-    res.render("Home" , {fullName:newUser.fullName});
+    res.render("Home" , {user:newUser});
 })
 
 
@@ -65,7 +68,8 @@ const userSigninHandler  = asyncHandler(async(req , res)=>{
 
     if(!passMatch) res.render("signin" , {error:"Wrong Pass or email"});
     const token = createTokenForUser(user);
-    res.cookie("authToken", token).render("Home" , {fullName:user.fullName});
+    const blogData = await blogsModel.find({});
+    res.cookie("authToken", token).render("Home" , {user:user , blogs:blogData});
 })
 
 const userLogoutHandler = asyncHandler(async(req, res)=>{

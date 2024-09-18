@@ -4,10 +4,9 @@ const { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler
 
 
 router.get("/" ,renderHomePage )
-router.get("/signup" , renderSignupPage);
-router.get("/signin" , renderSigninPage);
-
-router.post("/signup", userSignupHandler);
-router.post("/signin" , userSigninHandler);
+router.route("/signup").get(renderSignupPage).post(userSignupHandler);
+router.route("/signin").get(renderSigninPage).post(userSigninHandler);
 router.get("/logout" , userLogoutHandler);
+
+
 module.exports = router;

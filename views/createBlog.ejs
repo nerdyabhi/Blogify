@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - Create a Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.0.1/dist/full.css" rel="stylesheet" />
+</head>
+<body >
+<%- include("./partials/navbar")  %>
+
+<div class="container bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Create a Blog</h2>
+
+
+        <form action="/blogs" method="POST" enctype="multipart/form-data" class="space-y-6">
+    
+          <!-- Title Input -->
+          <div>
+            <label for="title" class="block  text-sm font-medium text-gray-700">Title</label>
+            <input type="text" id="title" name="title" class="bg-white text-black input input-bordered w-full mt-1" placeholder="Blog Title" required />
+          </div>
+    
+          <!-- Message Textarea -->
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+            <textarea id="body" name="body" rows="5" class="textarea textarea-bordered w-full mt-1 bg-white text-black " placeholder="Enter complete blog..." required></textarea>
+          </div>
+    
+          <!-- File Upload (Drag & Drop) with Image Preview -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Upload Image</label>
+            <div id="drop-zone" class="flex justify-center items-center w-full mt-1 border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 hover:bg-gray-100 cursor-pointer">
+              <input type="file" id="file-upload" name="file" class="hidden" accept="image/*" required />
+              <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8 2a6 6 0 100 12h4a6 6 0 000-12H8zm3 10v-1.707l1.146 1.147a.5.5 0 00.707-.707l-2-2a.5.5 0 00-.707 0l-2 2a.5.5 0 00.707.707L9 10.293V12a.5.5 0 001 0zM2 10a5.978 5.978 0 011.528-3.937.5.5 0 11.707.707A4.978 4.978 0 003 10c0 1.105.45 2.105 1.235 2.81a.5.5 0 01-.707.707A5.978 5.978 0 012 10zm12.765 2.81A4.978 4.978 0 0017 10a5.978 5.978 0 00-1.528-3.937.5.5 0 01.707-.707A6 6 0 0118 10c0 1.662-.675 3.166-1.765 4.19a.5.5 0 01-.707-.707z" clip-rule="evenodd" />
+                </svg>
+                <p class="mt-2 text-sm text-gray-500">Drag & drop your image here or click to browse</p>
+              </div>
+            </div>
+            <!-- Image Preview and Filename -->
+            <div id="image-preview" class="mt-4">
+              <img id="preview-img" class="w-full h-48 object-cover rounded-lg" src="" alt="Image Preview" style="display: none;">
+              <p id="prev-img-name" class="text-sm text-gray-600 mt-2"></p> <!-- Filename here -->
+            </div>
+          </div>
+    
+          <!-- Submit Button -->
+          <div>
+            <input type="submit" class="btn btn-primary w-full">Submit Blog</button>
+          </div>
+    
+        </form>
+      </div>
+</div>
+
+ 
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-upload');
+    const previewImg = document.getElementById('preview-img');
+    const fileName = document.getElementById("prev-img-name");
+
+    // Allow the drop event to be handled
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-gray-200');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('bg-gray-200');
+    });
+
+    // Handle file drop
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-gray-200');
+      const file = e.dataTransfer.files[0];
+      fileInput.files = e.dataTransfer.files; // Attach dropped files to the file input
+      showImagePreview(file); // Show image preview
+    });
+
+    // Click to trigger file input
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    // Listen for file selection
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      showImagePreview(file);
+    });
+
+    // Function to display image preview and filename
+    function showImagePreview(file) {
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          previewImg.style.display = 'block';
+          fileName.innerText = `Uploaded file: ${file.name}`; // Show filename
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewImg.style.display = 'none';
+        fileName.innerText = ''; // Hide filename if no valid file is selected
+      }
+    }
+  </script>
+
+</body>
+</html>
