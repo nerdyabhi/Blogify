@@ -1,7 +1,7 @@
 const express = require('express');
 const blogModel = require("../models/blogs");
 const asyncHandler = require('express-async-handler');
-const blogs = require('../models/blogs');
+const uploadOnCloudinary = require('../utils/uploadOnCloudinary');
 
 
 const app = express();
@@ -16,14 +16,27 @@ const renderBlogPage = (req , res)=>{
 
 const postBlogHandler = asyncHandler(async(req, res)=>{
     const {title , body} = req.body;
-    const newBlog = await blogModel.create({
-        title:title,
-        body:body,
-        coverImageURL:`./images/uploads/${req.file.filename}`,
-        createdBy:req.user._id,
-    }) 
+    let coverImageURL = `./images/uploads/${req.file.filename}`;
+    
 
-    console.log(newBlog);
+    try {
+        const fileResponse = await uploadOnCloudinary(req.file.path);
+        coverImageURL = fileResponse.url;
+        console.log("CoverImage Url value is : " , coverImageURL);
+        
+        const newBlog = await blogModel.create({
+            title:title,
+            body:body,
+            coverImageURL:coverImageURL,
+            createdBy:req.user._id,
+        }) 
+
+    } catch (error) {
+        console.log("Some error happend on our side: ");
+        
+    }
+    
+
     
     res.redirect("/");
 })
