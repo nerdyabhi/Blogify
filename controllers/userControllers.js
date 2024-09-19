@@ -13,7 +13,9 @@ const renderHomePage = async(req, res)=>{
 
     // const data= validateToken();
     const token = req.cookies.authToken;
-    if(!token) res.render("signin" , {error:"You're not logged in, kindly login"});
+    if(!token) return res.render("signin" , {error:"You're not logged in, kindly login"});
+    console.log("Token is present*");
+    
     const userData = validateToken(token);
     const blogsData = await blogModel.find({});
     res.render("home" , {user:userData , blogs:blogsData});
@@ -50,9 +52,10 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
         password:hashedPassword,
         role:"USER",
     })
-
+    const token = createTokenForUser(newUser);
+   
     const blogData = await blogModel.find({});
-    res.render("Home" , {user:newUser , blogs:blogData});
+    res.cookie("authToken" , token).render("Home" , {user:newUser , blogs:blogData});
 })
 
 
@@ -61,16 +64,22 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
 // POST : http://localhost:3000/signin
 const userSigninHandler  = asyncHandler(async(req , res)=>{
     const { email , password} = req.body;
+    console.log("Reached signin Handler.");
     
     const user = await userModel.findOne({email:email});
     if(!user) res.render("signin" , {error:"Wrong Pass or email"});
     
     const passMatch = await bcrypt.compare(password,user.password );
-
+    
     if(!passMatch) res.render("signin" , {error:"Wrong Pass or email"});
-    const token = createTokenForUser(user);
-    const blogData = await blogsModel.find({});
-    res.cookie("authToken", token).render("Home" , {user:user , blogs:blogData});
+    try {
+        const blogData = await blogsModel.find({});
+        const token = createTokenForUser(user);
+        return res.cookie("authToken", token).render("Home" , {user:user , blogs:blogData});
+    } catch (error) {
+        console.log("Error hogaya yeah toh " , error);
+        res.send("error aagaya sir");
+    }
 })
 
 const userLogoutHandler = asyncHandler(async(req, res)=>{

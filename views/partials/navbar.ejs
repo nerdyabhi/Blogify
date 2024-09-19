@@ -6,13 +6,21 @@
     <a class="btn btn-button text-md text-white ml-4" href="/blogs">Create Blogs</a>
 
   </div>
+ 
+
 
   <div class="dropdown dropdown-end">
     <div tabindex="2" role="button" class="btn btn-ghost btn-circle avatar">
       <div class="w-15 rounded-full">
         <img
           alt="Tailwind CSS Navbar component"
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+          <% if (locals.user) { %>
+            src="<%= locals.user.profileImageUrl %>"/>
+           <% } else { %>
+            src="/uploads/defaultAvatar.png"
+          <% } %>
+        >
+           
       </div>
     </div>
     <ul
