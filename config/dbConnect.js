@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-const url = "mongodb://127.0.0.1:27017/Blogify";
+require("dotenv").config();
+const url = process.env.MONGO_DB_URL;
 
 const connectDB = async()=>{
     try {

@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
 
     profileImageUrl:{
         type:String,
-        default:"/images/defaultAvatar.png"
+        default:"https://res.cloudinary.com/dvanwo7dv/image/upload/v1726784461/wqvdjxlslbfgmbmcyj3d.jpg"
     },
      
     role:{

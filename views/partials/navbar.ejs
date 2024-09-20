@@ -1,39 +1,20 @@
-<div class="navbar px-10 py-3  bg-base-100">
-  <div class="flex-1 flex items-center">
-    <a href="/" class="flex items-center">
-      BLOGIFY
-    </a>
-    <a class="btn btn-button text-md text-white ml-4" href="/blogs">Create Blogs</a>
-
+<div class="navbar bg-base-100">
+  <div class="flex-1">
+    <a href="/" class="btn btn-ghost normal-case text-xl">BLOGIFY</a>
   </div>
- 
-
-
-  <div class="dropdown dropdown-end">
-    <div tabindex="2" role="button" class="btn btn-ghost btn-circle avatar">
-      <div class="w-15 rounded-full">
-        <img
-          alt="Tailwind CSS Navbar component"
-          <% if (locals.user) { %>
-            src="<%= locals.user.profileImageUrl %>"/>
-           <% } else { %>
-            src="/uploads/defaultAvatar.png"
-          <% } %>
-        >
-           
-      </div>
+  <div class="flex-none gap-2">
+    <a href="/blogs/" class="btn btn-primary">Create Blog</a>
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img src="<%= locals.user ? locals.user.profileImageUrl : '/uploads/defaultAvatar.png' %>" alt="User avatar" />
+        </div>
+      </label>
+      <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
     </div>
-    <ul
-      tabindex="0"
-      class="menu menu-md dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
-      <li class="text-black">
-        <a class="justify-between" href="/profile">
-          Profile
-          <span class="badge">New</span>
-        </a>
-      </li>
-      <li class="text-black"><a href="/settings">Settings</a></li>
-      <li class="text-black"><a href="/logout">Logout</a></li>
-    </ul>
   </div>
 </div>

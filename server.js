@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const connectDB = require('./config/dbConnect.js');
 const cookieParser = require('cookie-parser');
 const auth = require("./middleware/auth.js");

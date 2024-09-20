@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const renderBlogPage = (req , res)=>{
-    const user = req.body.user;
+    const user = req.user;
     res.render("createBlog" , {user:user});
 } 
 
@@ -20,7 +20,8 @@ const postBlogHandler = asyncHandler(async(req, res)=>{
     
 
     try {
-        const fileResponse = await uploadOnCloudinary(req.file.path);
+        const fileResponse = await uploadOnCloudinary(req.file.buffer, req.file.originalname);
+
         coverImageURL = fileResponse.url;
         console.log("CoverImage Url value is : " , coverImageURL);
         

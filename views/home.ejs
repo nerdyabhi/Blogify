@@ -1,54 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.0.1/dist/full.css" rel="stylesheet" />
     <title><%= locals.user.fullName %>'s Dashboard</title>
     <style>
-        /* Custom CSS to handle fixed height and overflow */
         .blog-preview {
-            max-height: 150px; /* Adjust as needed */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
             overflow: hidden;
         }
     </style>
 </head>
-<body class="max-w-[100vw] overflow-x-hidden">
-    <!-- Navigation Bar -->
+<body class="min-h-screen bg-base-200">
     <%- include('./partials/navbar') %>
-
-    <div class="container mx-3 px-10">
-        <main class="container mx-auto mt-8 bg">
-            <h1 class="text-3xl text-white font-bold mb-8">Welcome, <%= locals.user.fullName %>!</h1>
-    
-            <!-- Blog Posts Section -->
-            <div class="container mx-auto py-8">
-                <h1 class="text-4xl font-bold text-center mb-8">Blogs</h1>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <% if (locals.blogs) { %>
-                        <% locals.blogs.forEach(blog => { %>
-                            <div class="card bg-base-100 shadow-xl">
-                                <figure>
-                                    <!-- Display the cover image -->
-                                    <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>" class="object-cover h-48 w-full" />
-                                </figure>
-                                <div class="card-body">
-                                    <!-- Display the blog title -->
-                                    <h2 class="card-title text-white text-2xl font-bold text-gray-900"><%= blog.title %></h2>
-                                    <!-- Display the blog body/description with fixed height -->
-                                    <p class="text-white blog-preview"><%= blog.body %></p>
-                                    <!-- Metadata like creation date -->
-                                    <p class="text-gray-500 text-white text-sm mt-2">Created at: <%= new Date(blog.createdAt).toLocaleDateString() %></p>
-                                    <p class="text-gray-500 text-white text-sm">By: <%= blog.createdBy %></p>
-                                    <div class="card-actions justify-end mt-4">
-                                        <a href="/blogs/<%= blog._id %>" class="btn btn-primary">Read More</a>
-                                    </div>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-center">Welcome, <%= locals.user.fullName %>!</h1>
+   
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 text-center">All Blogs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% if (locals.blogs && locals.blogs.length > 0) { %>
+                    <% locals.blogs.forEach(blog => { %>
+                        <div class="card bg-base-100 shadow-xl">
+                            <figure>
+                                <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>" class="w-full h-48 object-cover" />
+                            </figure>
+                            <div class="card-body">
+                                <h3 class="card-title"><%= blog.title %></h3>
+                                <p class="blog-preview"><%= blog.body %></p>
+                                <div class="flex justify-between items-center text-sm opacity-70">
+                                    <span>By: <%= blog.createdBy %></span>
+                                    <span><%= new Date(blog.createdAt).toLocaleDateString() %></span>
+                                </div>
+                                <div class="card-actions justify-end mt-4">
+                                    <a href="/blogs/<%= blog._id %>" class="btn btn-primary">Read More</a>
                                 </div>
                             </div>
-                            <% }); %>
-                    <% } %>
-                </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-span-full text-center">
+                        <p class="text-lg mb-4">You haven't created any blogs yet.</p>
+                        <a href="/blogs/create" class="btn btn-primary">Create your first blog!</a>
+                    </div>
+                <% } %>
             </div>
-        </main>
+        </section>
     </div>
+<!-- Floating Pencil Icon -->
+<a href="/blogs" class="btn btn-circle btn-lg btn-error fixed bottom-8 right-8 shadow-lg bg-red-500 hover:bg-red-600 transition transform hover:scale-110">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a1.25 1.25 0 0 0-1.768 0l-8.097 8.096a1.25 1.25 0 0 0-.327.588l-1.004 4.016a.25.25 0 0 0 .307.307l4.016-1.004a1.25 1.25 0 0 0 .588-.327l8.097-8.097a1.25 1.25 0 0 0 0-1.768l-1.808-1.809zM19.75 7.999L16.5 4.75M12 19h7" />
+    </svg>
+</a>
+
+
 </body>
 </html>

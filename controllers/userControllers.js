@@ -55,7 +55,7 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
     const token = createTokenForUser(newUser);
    
     const blogData = await blogModel.find({});
-    res.cookie("authToken" , token).render("Home" , {user:newUser , blogs:blogData});
+    res.cookie("authToken" , token).render("home" , {user:newUser , blogs:blogData});
 })
 
 
@@ -75,7 +75,7 @@ const userSigninHandler  = asyncHandler(async(req , res)=>{
     try {
         const blogData = await blogsModel.find({});
         const token = createTokenForUser(user);
-        return res.cookie("authToken", token).render("Home" , {user:user , blogs:blogData});
+        return res.cookie("authToken", token).render("home" , {user:user , blogs:blogData});
     } catch (error) {
         console.log("Error hogaya yeah toh " , error);
         res.send("error aagaya sir");
