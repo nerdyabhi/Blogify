@@ -4,11 +4,11 @@ const authhandler = (req ,res, next)=>{
     console.log(req.body);
     
     const token = req.cookies.authToken;
-    if(!token) res.render("Signin" , {error:"Invalid User , Please login again"});
+    if(!token) res.render("signin" , {error:"Invalid User , Please login again"});
     
     try{
         const payload = validateToken(token);
-        if(!payload) res.render("Signin" , {error:"Invalid User , Please login again"});
+        if(!payload) res.render("signin" , {error:"Invalid User , Please login again"});
         req.user = payload;
         next();
     }
