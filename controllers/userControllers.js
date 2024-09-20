@@ -5,6 +5,7 @@ const user = require('../models/user');
 const blogModel = require('../models/blogs');
 const {createTokenForUser , validateToken} = require('../utils/auth');
 const blogsModel = require('../models/blogs');
+const uploadOnCloudinary = require('../utils/uploadOnCloudinary');
 
 // render Home Page
 // Public 
@@ -39,17 +40,25 @@ const renderSigninPage = (req, res)=>{
 // Public 
 // POST : http://localhost:3000/signin
 const userSignupHandler  = asyncHandler(async(req , res)=>{
-
+    console.log(req.body);
     const {fullName , email , password} = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const alreadyUser = await userModel.findOne({email:email});
     if(alreadyUser) res.render("signup" , {alreadyUser:true});
 
+    let profileImage = await uploadOnCloudinary(req.file.buffer , req.file.originalname);
+
+    const profileImageUrl = profileImage.url || "https://res.cloudinary.com/dvanwo7dv/image/upload/v1726784461/wqvdjxlslbfgmbmcyj3d.jpg";
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    console.log(profileImageUrl);
+    
     const newUser = await userModel.create({
         fullName:fullName,
         email:email,
         password:hashedPassword,
+        profileImageUrl:profileImageUrl,
         role:"USER",
     })
     const token = createTokenForUser(newUser);

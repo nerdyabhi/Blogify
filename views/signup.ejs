@@ -1,52 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <%- include('./partials/head') %>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: "#1E293B",
+                            200: "#0F172A",
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-  <div class="flex justify-center items-center h-screen">
-    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-
-      <% if (locals.error) { %>
-       <p class="text-red-500"><%= locals.error %></p>
-      <% } %>
-      <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
-      <form action="/signup" method="POST" class="space-y-6">
-        <!-- Name Field -->
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" id="name" name="fullName" class="mt-1 block w-full px-4 py-2 bg-white text-black border border-gray-300   rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Your Full Name" required />
+<body class="bg-dark-200 text-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-dark-100 p-8 rounded-2xl shadow-xl">
+            <h2 class="text-3xl font-bold mb-6 text-center text-indigo-400">Sign Up</h2>
+            <form class="space-y-6" action="/signup" method="post" enctype="multipart/form-data">
+                <div class="space-y-2">
+                    <label for="fullName" class="block text-sm font-medium text-gray-300">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required 
+                           class="w-full px-3 py-2 bg-dark-200 border border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                </div>
+                <div class="space-y-2">
+                    <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="w-full px-3 py-2 bg-dark-200 border border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                </div>
+                <div class="space-y-2">
+                    <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                    <input type="password" id="password" name="password" required 
+                           class="w-full px-3 py-2 bg-dark-200 border border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200">
+                </div>
+                <div class="space-y-2">
+                    <label for="profileImage" class="block text-sm font-medium text-gray-300">Profile Image</label>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-24 h-24 bg-dark-200 border-2 border-dashed border-gray-600 rounded-full flex items-center justify-center overflow-hidden">
+                            <img id="imagePreview" src="#" alt="Profile preview" class="w-full h-full object-cover hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="placeholderIcon">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" class="hidden" onchange="previewImage(event)">
+                        <label for="profileImage" class="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            Choose Image
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-200 font-semibold">
+                    Create Account
+                </button>
+            </form>
+            <p class="mt-4 text-center text-gray-400">
+                Already have an account? 
+                <a href="/signin" class="text-indigo-400 hover:text-indigo-300 transition duration-200">Log in</a>
+            </p>
         </div>
-        <!-- Email Field -->
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white text-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="you@example.com" required />
-        </div>
-        <!-- Password Field -->
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" name="password" id="password" class="mt-1  bg-white text-black block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="********" required />
-        </div>
-       
-        <!-- Submit Button -->
-        <div>
-          <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            Sign Up
-          </button>
-
-        <p class="mt-2">Already have an account ? <a class="text-blue-500" href="/signin">Sign in</a></p>
-
-        </div>
-      </form>
     </div>
-  </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    const placeholder = document.getElementById('placeholderIcon');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </body>
 </html>
- 
