@@ -51,8 +51,6 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
 
     
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    console.log(profileImageUrl);
     
     const newUser = await userModel.create({
         fullName:fullName,
