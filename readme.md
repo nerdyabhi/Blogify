@@ -1,5 +1,5 @@
 # How to Use this software?
-1. Signup from [Here](https://nerdyabhi-blogify.vercel.app/signup)
+1. Signup from [Here](https://nerdyabhi-blogify.vercel.app/)
 
 2. And Click on Create a blog / pencil icon to write a blog.
 
