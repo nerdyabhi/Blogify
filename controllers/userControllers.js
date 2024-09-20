@@ -43,7 +43,7 @@ const userSignupHandler  = asyncHandler(async(req , res)=>{
     console.log(req.body);
     const {fullName , email , password} = req.body;
     const alreadyUser = await userModel.findOne({email:email});
-    if(alreadyUser) res.render("signup" , {alreadyUser:true});
+    if(alreadyUser) res.render("signup" , {error:"User Already Exists  , Kindly Login."});
 
     let profileImage = await uploadOnCloudinary(req.file.buffer , req.file.originalname);
 
