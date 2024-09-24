@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { renderHomePage , renderSignupPage , renderSigninPage , userSignupHandler , userSigninHandler , userLogoutHandler , renderUserProfile} = require('../controllers/userControllers');
 const multer = require('multer');
-const path = require('path');
 
 
 const storage = multer.memoryStorage();

@@ -35,12 +35,8 @@ app.use("/blogs" , auth  , require("./routes/blogRoutes"))
 
 // Catch-all route for non-existing routes
 app.use((req, res) => {
-    res.status(404).render('404'); // Render the 404 page or a specific page
-});
-
- 
-console.log(process.env.HELLO);
-
+    res.status(404).render('404'); 
+})
 
 
 // Port
